@@ -21,7 +21,7 @@ class WebviewStaging {
     func createNewWaitingView() {
         NSLog("creating new pending webview")
         self.waitingWebview = WKWebView(frame: UIScreen.main.bounds)
-//        self.waitingWebview!.loadHTMLString("<html><body></body></html>", baseURL: URL(string: "test://testa/first"))
+        self.waitingWebview!.loadHTMLString("<html><body></body></html>", baseURL: URL(string: "test://testa/first"))
     }
     
     func getWaiting() -> WKWebView {

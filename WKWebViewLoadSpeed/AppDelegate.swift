@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         
         let controller = UINavigationController()
-        controller.viewControllers = [ExampleWebView(loadStyle: .normal)]
+        controller.viewControllers = [ExampleWebView(loadStyle: .normal, shouldCheckColor: true)]
         
         staging.createNewWaitingView()
         window!.rootViewController = controller

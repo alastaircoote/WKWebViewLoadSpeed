@@ -52,7 +52,7 @@ extension UIView {
                 drawHierarchy(in: frame, afterScreenUpdates: true)
             }
         } else {
-            UIGraphicsBeginImageContextWithOptions(frame.size, isOpaque, UIScreen.main.scale)
+            UIGraphicsBeginImageContextWithOptions(CGSize(width:1,height:1), isOpaque, UIScreen.main.scale)
             drawHierarchy(in: frame, afterScreenUpdates: true)
             image = UIGraphicsGetImageFromCurrentImageContext()
             UIGraphicsEndImageContext()
@@ -94,8 +94,10 @@ class ExampleWebView : UIViewController, WKNavigationDelegate {
     let backgroundColor: UIColor
     let startTime:TimeInterval
     
+    var nextShouldCheckTime:Bool = false
     
-    init(loadStyle: LoadStyle) {
+    
+    init(loadStyle: LoadStyle, shouldCheckColor: Bool) {
         if loadStyle == .normal {
             self.webview = WKWebView(frame: UIScreen.main.bounds)
         } else {
@@ -121,10 +123,12 @@ class ExampleWebView : UIViewController, WKNavigationDelegate {
                 NSLog("oh no! \(err) \(result)")
             })
         } else {
-            self.webview.loadHTMLString("<html>" + pageTemplate + "</html>", baseURL: URL(string: "test://test/first"))
+            self.webview.loadHTMLString("<html>" + pageTemplate + "</html>", baseURL: URL(string: "https://test/first"))
         }
         self.webview.navigationDelegate = self
-        self.checkColor()
+        if shouldCheckColor {
+            self.checkColor()
+        }
 
     }
     
@@ -136,7 +140,7 @@ class ExampleWebView : UIViewController, WKNavigationDelegate {
         
         if foundColor.toHexString == self.backgroundColor.toHexString {
             NSLog("WOAH! \(Date().timeIntervalSince1970 - self.startTime), (setLoadTime(\(Date().timeIntervalSince1970 - self.startTime))")
-            self.webview.evaluateJavaScript("document.getElementById('loadtime').innerHTML = \(Date().timeIntervalSince1970 - self.startTime)", completionHandler: nil)
+            self.webview.evaluateJavaScript("document.getElementById('loadtime-container').style.display = 'block'; document.getElementById('loadtime').innerHTML = \(Date().timeIntervalSince1970 - self.startTime)", completionHandler: nil)
             staging.createNewWaitingView()
         } else {
             NSLog("NO \(foundColor.toHexString) \(self.backgroundColor.toHexString)")
@@ -156,15 +160,21 @@ class ExampleWebView : UIViewController, WKNavigationDelegate {
         decisionHandler(.cancel)
         
         if command == "/load-normal" {
-            self.navigationController?.pushViewController(ExampleWebView(loadStyle: LoadStyle.normal), animated: true)
+            self.navigationController?.pushViewController(ExampleWebView(loadStyle: LoadStyle.normal, shouldCheckColor: self.nextShouldCheckTime), animated: true)
+        }
+        
+        if command == "/check-time" {
+            self.nextShouldCheckTime = !self.nextShouldCheckTime
+            let text = self.nextShouldCheckTime ? "Yes" : "No"
+            self.webview.evaluateJavaScript("document.getElementById('time-next').innerHTML = '\(text)'", completionHandler: nil)
         }
         
         if command == "/load-precreated" {
-            self.navigationController?.pushViewController(ExampleWebView(loadStyle: LoadStyle.staged), animated: true)
+            self.navigationController?.pushViewController(ExampleWebView(loadStyle: LoadStyle.staged, shouldCheckColor: self.nextShouldCheckTime), animated: true)
         }
         
         if command == "/load-injected" {
-            self.navigationController?.pushViewController(ExampleWebView(loadStyle: LoadStyle.injected), animated: true)
+            self.navigationController?.pushViewController(ExampleWebView(loadStyle: LoadStyle.injected, shouldCheckColor: self.nextShouldCheckTime), animated: true)
         }
         
         

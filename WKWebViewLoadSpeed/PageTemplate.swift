@@ -35,7 +35,8 @@ func createPageTemplate(withBackground bgColor: UIColor) -> String {
     </head>
     <body style='background:#\(bgColor.toHexString)'>
         <h1>Page load test</h1>
-    <p>Was visible in <span id='loadtime'></span> seconds</p>
+    <p id='loadtime-container' style='display:none'>Was visible in <span id='loadtime'></span> seconds</p>
+    <p><a href='/check-time'>Time next load: <span id='time-next' style='font-weight: bold'>No</span>.</a>
     <p><a href="/load-normal">Load another, normally</a></p>
     <p><a href="/load-precreated">Load another, pre-created</a></p>
     <p><a href="/load-injected">Load another, injecting content</a></p>
