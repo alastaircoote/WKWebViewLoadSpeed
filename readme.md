@@ -1,8 +1,10 @@
 # Testing the load time of WKWebViews
 
-<img src='./first-shot.png' width='450' style='display:block;float:right;margin-left: 20px;' /> In experimenting with in-app webviews I've noticed that the WKWebView can sometimes be slow to load. So I did a couple of quick experiments to see if I could improve that, which are contained in this app.
+In experimenting with in-app webviews I've noticed that the WKWebView can sometimes be slow to load. So I did a couple of quick experiments to see if I could improve that, which are contained in this app.
 
 (I warn you now, the code is terrible, but this is just a quick test I figured I might as well publish)
+
+<img src='./first-shot.png' width='450' />
 
 It gives you buttons to try out three load modes, as well as turning load timing on and off. The WKWebView's load handler doesn't seem to bear any relation to whether the page is actually visible (I assume this is cross-process thing) so instead we take lots of screenshots in rapid succession to manually check when the page has visibly loaded.
 
