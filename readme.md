@@ -4,7 +4,7 @@ In experimenting with in-app webviews I've noticed that the WKWebView can someti
 
 (I warn you now, the code is terrible, but this is just a quick test I figured I might as well publish)
 
-<img src='./first-shot.png' width='450' />
+![GIF comparison](https://thumbs.gfycat.com/CourteousMediumAssassinbug-size_restricted.gif)
 
 It gives you buttons to try out three load modes, as well as turning load timing on and off. The WKWebView's load handler doesn't seem to bear any relation to whether the page is actually visible (I assume this is cross-process thing) so instead we take lots of screenshots in rapid succession to manually check when the page has visibly loaded.
 
@@ -27,6 +27,4 @@ I noticed that there is sometimes a delay in `loadHTMLString()` no matter what y
 
 There's a very clear difference between the normal loading and pre-created load - while the raw numbers aren't accurate (see above) it appears in about half the time. More crucially, the "blue flash" of the empty view controller transitioning onto the screen happens far less often (but does still happen from time to time).
 
-There's a much smaller difference between pre-created vs injected. Sometimes it seems to have an effect but other times it doesn't, and it's not too clear why. It brings some weird restrictions with it (for one, you need to handle `script` tags manually because you can't inject them) so you may or may not want to implement it. But an example of normal vs pre-created:
-
-![GIF comparison](https://thumbs.gfycat.com/TensePointlessAustralianfreshwatercrocodile-size_restricted.gif)
+There's a much smaller difference between pre-created vs injected. Sometimes it seems to have an effect but other times it doesn't, and it's not too clear why. It brings some weird restrictions with it (for one, you need to handle `script` tags manually because you can't inject them) so you may or may not want to implement it.
